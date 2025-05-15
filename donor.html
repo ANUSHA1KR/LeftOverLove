@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Donor - FoodSaver</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <nav class="sidebar">
+    <h2>FoodSaver</h2>
+    <a href="dashboard.html">🏠 Home</a>
+    <a class="active" href="donor.html">🧑‍🌾 Donor</a>
+    <a href="receiver.html">🤝 Receiver</a>
+    <a href="organization.html">🏢 Organization</a>
+    <a href="volunteer.html">🚗 Volunteer</a>
+    <a href="feedback.html">💬 Feedback</a>
+    <a href="support.html">📞 Support</a>
+    <a href="settings.html">⚙️ Settings</a>
+  </nav>
+
+  <main class="content">
+    <h2>🍱 Donate Food</h2>
+    <form id="donorForm">
+      <input type="text" id="foodName" placeholder="Food Name" required />
+      <textarea id="foodDetails" placeholder="Describe the food..." required></textarea>
+      <input type="datetime-local" id="expiry" required />
+      <select id="type">
+        <option value="">Select Type</option>
+        <option value="veg">Veg</option>
+        <option value="non-veg">Non-Veg</option>
+      </select>
+      <input type="text" id="location" placeholder="Live Location" required />
+      <input type="file" id="photo" accept="image/*" />
+      <button type="submit">Post Donation</button>
+    </form>
+    <div id="resultMsg" style="margin-top: 1rem; color: green;"></div>
+  </main>
+
+  <script>
+    document.getElementById("donorForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById("foodName").value,
+        details: document.getElementById("foodDetails").value,
+        expiry: document.getElementById("expiry").value,
+        type: document.getElementById("type").value,
+        location: document.getElementById("location").value,
+        time: new Date().toISOString()
+      };
+      const donations = JSON.parse(localStorage.getItem("donations") || "[]");
+      donations.push(data);
+      localStorage.setItem("donations", JSON.stringify(donations));
+      document.getElementById("resultMsg").textContent = "Donation posted!";
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>

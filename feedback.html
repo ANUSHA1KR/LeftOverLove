@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback - FoodSaver</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <h2>🥡 FoodSaver</h2>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="donor.html">🧑‍🌾 Donor</a>
+    <a href="receiver.html">🤝 Receiver</a>
+    <a href="organization.html">🏢 Organization</a>
+    <a href="volunteer.html">🚗 Volunteer</a>
+    <a class="active" href="feedback.html">💬 Feedback</a>
+    <a href="support.html">📞 Support</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+    <button id="darkModeToggle" class="dark-toggle">🌓 Toggle Theme</button>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="content">
+    <h2>💬 We'd Love Your Feedback!</h2>
+    <p>Tell us how we're doing or what you'd like to see improved.</p>
+
+    <form id="feedbackForm" class="form-card">
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" required placeholder="John Doe" />
+
+      <label for="email">Your Email:</label>
+      <input type="email" id="email" required placeholder="john@example.com" />
+
+      <label for="message">Your Feedback:</label>
+      <textarea id="message" rows="5" required placeholder="Write your feedback here..."></textarea>
+
+      <button type="submit">📨 Submit Feedback</button>
+      <div id="feedbackMsg" class="status-msg"></div>
+    </form>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script>
+    document.getElementById("feedbackForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (!name || !email || !message) {
+        document.getElementById("feedbackMsg").textContent = "Please fill in all fields.";
+        return;
+      }
+
+      // In production, send to backend using fetch()
+      console.log("Feedback submitted:", { name, email, message });
+
+      document.getElementById("feedbackMsg").textContent = "Thank you for your feedback!";
+      document.getElementById("feedbackForm").reset();
+    });
+  </script>
+</body>
+</html>
