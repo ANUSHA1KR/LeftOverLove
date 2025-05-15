@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Organization - FoodSaver</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #ecf0f3;
+      color: #333;
+    }
+
+    .sidebar {
+      width: 240px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      background-color: #2c3e50;
+      color: white;
+      padding: 2rem 1rem;
+      overflow-y: auto;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 2rem;
+      font-size: 1.8rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      margin: 0.3rem 0;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      width: 100%;
+      display: block;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #34495e;
+    }
+
+    main.content {
+      margin-left: 240px;
+      padding: 2rem 3rem;
+      width: calc(100% - 240px);
+      background-color: #fff;
+      min-height: 100vh;
+    }
+
+    form input, form select, form button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    form button {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #219150;
+    }
+
+    .org-card {
+      background: #f9f9f9;
+      border-left: 5px solid #2980b9;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    hr {
+      margin: 2rem 0;
+    }
+
+    #organizationListSection {
+      background-color: #e3f2fd;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #bbdefb;
+    }
+
+    #organizationListSection h2 {
+      margin-top: 0;
+      color: #1565c0;
+    }
+
+    #addOrganizationSection {
+      background-color: #f0f9f9;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #d0e6e6;
+    }
+
+    #addOrganizationSection h2 {
+      margin-top: 0;
+      color: #00796b;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 1rem;
+      }
+
+      .sidebar a {
+        font-size: 0.9rem;
+        padding: 8px;
+        margin: 0;
+        width: auto;
+      }
+
+      main.content {
+        margin-left: 0;
+        width: 100%;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <h2>FoodSaver</h2>
+    <a href="dashboard.html">🏠 Home</a>
+    <a href="donor.html">🧑‍🌾 Donor</a>
+    <a href="receiver.html">🤝 Receiver</a>
+    <a class="active" href="organization.html">🏢 Organization</a>
+    <a href="volunteer.html">🚗 Volunteer</a>
+    <a href="feedback.html">💬 Feedback</a>
+    <a href="support.html">📞 Support</a>
+    <a href="settings.html">⚙️ Settings</a>
+  </nav>
+
+  <main class="content">
+
+    <!-- Moved Add Organization Section UP -->
+    <section id="addOrganizationSection">
+      <h2>➕ Add New Organization</h2>
+      <form id="orgForm">
+        <input type="text" id="orgName" placeholder="Organization Name" required />
+        <input type="text" id="orgPhone" placeholder="Contact Number" required />
+        <input type="text" id="orgAddress" placeholder="Address" required />
+        <label for="schedule">Pickup Schedule:</label>
+        <select id="schedule" required>
+          <option value="">Select...</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Evening">Evening</option>
+        </select>
+        <button type="submit">Add Organization</button>
+      </form>
+      <div id="orgResult" style="color: green; margin-top: 1rem;"></div>
+    </section>
+
+    <section id="organizationListSection">
+      <h2>🏢 Available Organizations</h2>
+      <div id="organizationList"></div>
+    </section>
+
+  </main>
+
+  <script>
+    const form = document.getElementById("orgForm");
+    const orgListDiv = document.getElementById("organizationList");
+
+    function loadOrganizations() {
+      orgListDiv.innerHTML = "";
+      const orgs = JSON.parse(localStorage.getItem("organizations") || "[]");
+      if (orgs.length === 0) {
+        orgListDiv.innerHTML = "<p>No organizations registered yet.</p>";
+      } else {
+        orgs.forEach(org => {
+          const div = document.createElement("div");
+          div.className = "org-card";
+          div.innerHTML = `
+            <strong>${org.name}</strong><br>
+            📞 ${org.phone}<br>
+            📍 ${org.address}<br>
+            📅 Pickup: ${org.schedule}
+          `;
+          orgListDiv.appendChild(div);
+        });
+      }
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const newOrg = {
+        name: document.getElementById("orgName").value,
+        phone: document.getElementById("orgPhone").value,
+        address: document.getElementById("orgAddress").value,
+        schedule: document.getElementById("schedule").value
+      };
+
+      const orgs = JSON.parse(localStorage.getItem("organizations") || "[]");
+      orgs.push(newOrg);
+      localStorage.setItem("organizations", JSON.stringify(orgs));
+
+      document.getElementById("orgResult").textContent = "Organization added!";
+      form.reset();
+      loadOrganizations();
+    });
+
+    window.onload = loadOrganizations;
+  </script>
+</body>
+</html>

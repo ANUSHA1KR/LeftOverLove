@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Support & Help Center - FoodSaver</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      background-color: #f4f6f8;
+      color: #333;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #2c3e50;
+      color: white;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .sidebar h1 {
+      font-size: 1.8rem;
+      margin: 0 0 1rem;
+      width: 100%;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+    .sidebar .username {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      width: 100%;
+      text-align: center;
+      color: #a8b9ca;
+      user-select: none;
+    }
+    .sidebar a {
+      width: 100%;
+      color: white;
+      text-decoration: none;
+      padding: 12px 16px;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 1rem;
+      display: block;
+      transition: background-color 0.3s;
+    }
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: #34495e;
+    }
+    main.content {
+      flex: 1;
+      padding: 3rem 3rem;
+      margin-left: 220px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      overflow-y: auto;
+    }
+    main.content h2 {
+      color: #27ae60;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      font-size: 2rem;
+      user-select: none;
+    }
+    main.content p.subtitle {
+      font-size: 1.15rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    .support-methods {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    .method {
+      background-color: #e8f5e9;
+      border-left: 6px solid #27ae60;
+      padding: 1.25rem 1.5rem;
+      border-radius: 10px;
+      flex: 1 1 280px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+    .method h3 {
+      margin-top: 0;
+      margin-bottom: 0.6rem;
+      color: #2a7a2a;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+    .method p {
+      margin: 0 0 0.6rem 0;
+      color: #3e593e;
+      font-weight: 500;
+    }
+    .method .contact-detail {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #1b4d1b;
+      user-select: text;
+    }
+    .btn-chat {
+      background-color: #27ae60;
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background-color 0.3s;
+      margin-top: auto;
+    }
+    .btn-chat:hover {
+      background-color: #219150;
+    }
+    .contact-form {
+      margin-bottom: 3rem;
+      user-select: none;
+    }
+    .contact-form h3 {
+      color: #27ae60;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .contact-form form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-form label {
+      font-weight: 600;
+      color: #444;
+    }
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      padding: 10px 12px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      resize: vertical;
+      font-family: inherit;
+    }
+    .contact-form textarea {
+      min-height: 100px;
+    }
+    .contact-form button {
+      width: max-content;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      font-weight: 700;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      align-self: flex-start;
+      user-select: none;
+    }
+    .contact-form button:hover {
+      background-color: #219150;
+    }
+
+    /* NEW FAQ STYLES */
+    .faq {
+      user-select: none;
+    }
+    .faq h3 {
+      color: #27ae60;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+    .faq ul {
+      list-style: none;
+      padding-left: 0;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .faq li {
+      background: #f9fdf9;
+      border: 1.8px solid #27ae60;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(39, 174, 96, 0.15);
+    }
+    .faq-question {
+      background: #27ae60;
+      color: white;
+      cursor: pointer;
+      padding: 15px 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      width: 100%;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+    .faq-question:hover,
+    .faq-question:focus {
+      background-color: #219150;
+      outline: none;
+    }
+    .faq-question svg {
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+    .faq-question[aria-expanded="true"] svg {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 20px;
+      background: #f9fdf9;
+      color: #2c3e50;
+      font-weight: 500;
+      line-height: 1.5;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-answer.open {
+      padding: 15px 20px;
+      max-height: 500px; /* big enough to show text */
+    }
+
+    @media (max-width: 900px) {
+      main.content {
+        margin: 1rem;
+        max-width: none;
+        padding: 2rem 1.5rem;
+      }
+      .support-methods {
+        flex-direction: column;
+      }
+      .method {
+        flex: 1 1 auto;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 1rem 0.5rem;
+        flex-direction: row;
+        justify-content: space-around;
+        box-shadow: none;
+      }
+      .sidebar h1,
+      .sidebar .username {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar" aria-label="Primary navigation">
+    <h1>FoodSaver</h1>
+    <div class="username">Demo User</div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="donor.html">Donor</a>
+    <a href="receiver.html">Receiver</a>
+    <a href="feedback.html">Feedback</a>
+    <a class="active" href="support.html">Support</a>
+    <a href="settings.html">Settings</a>
+  </nav>
+
+  <main class="content" role="main" aria-label="Support & Help Center">
+    <h2>Support & Help Center</h2>
+    <p class="subtitle">Get help, browse FAQs, and contact our team.</p>
+
+    <section class="support-methods" aria-label="Support methods">
+      <article class="method" aria-labelledby="email-support-title">
+        <h3 id="email-support-title">Email Support</h3>
+        <p>Send us an email and we'll respond within 24 hours.</p>
+        <p class="contact-detail">support@foodsaver.org</p>
+      </article>
+
+      <article class="method" aria-labelledby="phone-support-title">
+        <h3 id="phone-support-title">Phone Support</h3>
+        <p>Available Monday-Friday, 9AM-5PM.</p>
+        <p class="contact-detail">+91 888 888 8888</p>
+      </article>
+
+      <article class="method" aria-labelledby="live-chat-title">
+        <h3 id="live-chat-title">Live Chat</h3>
+        <p>Chat with our support team in real-time.</p>
+        <button class="btn-chat" type="button" aria-label="Start Live Chat">Start Chat</button>
+      </article>
+    </section>
+
+    <section class="contact-form" aria-labelledby="contact-us-title">
+      <h3 id="contact-us-title">Contact Us</h3>
+      <form id="contact-form" action="#" method="post" novalidate>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required autocomplete="name" />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email" />
+
+        <label for="issue-type">Issue Type</label>
+        <select id="issue-type" name="issue-type" required>
+          <option value="" disabled selected>Select issue type</option>
+          <option value="donation">Donation Problem</option>
+          <option value="account">Account Issue</option>
+          <option value="technical">Technical Problem</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+
+    <section class="faq" aria-labelledby="faq-title">
+      <h3 id="faq-title">Frequently Asked Questions</h3>
+      <ul>
+        <li>
+          <button class="faq-question" aria-expanded="false" aria-controls="answer1" id="q1">
+            How does FoodSaver ensure food safety?
+            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <p id="answer1" class="faq-answer" hidden>
+            FoodSaver follows strict guidelines for food handling and partners only with trusted donors to ensure safety.
+          </p>
+        </li>
+        <li>
+          <button class="faq-question" aria-expanded="false" aria-controls="answer2" id="q2">
+            What types of food can I donate?
+            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <p id="answer2" class="faq-answer" hidden>
+            Non-perishable items, fresh produce, and prepared meals that meet our safety standards can be donated.
+          </p>
+        </li>
+        <li>
+          <button class="faq-question" aria-expanded="false" aria-controls="answer3" id="q3">
+            How do I sign up as a volunteer?
+            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <p id="answer3" class="faq-answer" hidden>
+            You can sign up on the Volunteer page by filling out the application form and attending an orientation.
+          </p>
+        </li>
+        <li>
+          <button class="faq-question" aria-expanded="false" aria-controls="answer4" id="q4">
+            Can organizations receive regular donations?
+            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <p id="answer4" class="faq-answer" hidden>
+            Yes, organizations can schedule recurring pickups to receive donations regularly.
+          </p>
+        </li>
+        <li>
+          <button class="faq-question" aria-expanded="false" aria-controls="answer5" id="q5">
+            What is the impact tracking system?
+            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <p id="answer5" class="faq-answer" hidden>
+            It allows donors and organizations to track how donations are used and the overall impact on communities.
+          </p>
+        </li>
+        <li>
+          <button class="faq-question" aria-expanded="false" aria-controls="answer6" id="q6">
+            Is there a cost to use FoodSaver?
+            <svg aria-hidden="true" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <p id="answer6" class="faq-answer" hidden>
+            No, FoodSaver is a free platform supported by donations and grants.
+          </p>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    // FAQ toggle with smooth animation
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const answerId = button.getAttribute('aria-controls');
+        const answer = document.getElementById(answerId);
+        const expanded = button.getAttribute('aria-expanded') === 'true';
+
+        // Toggle aria-expanded
+        button.setAttribute('aria-expanded', !expanded);
+
+        // Animate open/close
+        if (!expanded) {
+          answer.hidden = false;
+          // Add class to animate max-height and padding
+          answer.classList.add('open');
+        } else {
+          answer.classList.remove('open');
+          // Wait for animation to finish before hiding
+          answer.addEventListener('transitionend', () => {
+            if (!answer.classList.contains('open')) {
+              answer.hidden = true;
+            }
+          }, { once: true });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

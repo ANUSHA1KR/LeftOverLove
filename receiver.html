@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Receiver - FoodSaver</title>
+  <style>
+    body {
+      display: flex;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f6f8;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #2c3e50;
+      color: white;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    .sidebar h2 {
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .sidebar a {
+      display: block;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      margin-top: 10px;
+      border-radius: 4px;
+    }
+    .sidebar a.active, .sidebar a:hover {
+      background-color: #34495e;
+    }
+    .content {
+      flex: 1;
+      padding: 2rem;
+    }
+
+    .content h2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .description {
+      margin-bottom: 1.5rem;
+      color: #666;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filters input[type="text"],
+    .filters select {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .results-count {
+      margin-bottom: 1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    #foodList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .food-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .food-card h3 {
+      margin: 0 0 0.5rem 0;
+      color: #27ae60;
+    }
+
+    .food-card p {
+      margin: 0.2rem 0;
+      color: #555;
+    }
+
+    .btn-confirm {
+      margin-top: 1rem;
+      padding: 8px 12px;
+      border: none;
+      background-color: #27ae60;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      align-self: flex-start;
+    }
+
+    .btn-confirm:hover {
+      background-color: #219150;
+    }
+
+    .no-food {
+      color: #999;
+      font-style: italic;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar">
+    <h2>FoodSaver</h2>
+    <a href="dashboard.html">🏠 Home</a>
+    <a href="donor.html">🧑‍🌾 Donor</a>
+    <a class="active" href="receiver.html">🤝 Receiver</a>
+    <a href="organization.html">🏢 Organization</a>
+    <a href="volunteer.html">🚗 Volunteer</a>
+    <a href="feedback.html">💬 Feedback</a>
+    <a href="support.html">📞 Support</a>
+    <a href="settings.html">⚙️ Settings</a>
+  </nav>
+
+  <main class="content">
+    <h2>🍽️ Available Food</h2>
+    <p class="description">Browse and claim food donations in your area.</p>
+
+    <div class="filters">
+      <input type="text" id="search" placeholder="Search for food items..." />
+      <select id="distance">
+        <option>Any Distance</option>
+        <option>5 km</option>
+        <option>10 km</option>
+        <option>20 km</option>
+      </select>
+      <select id="category">
+        <option>All Categories</option>
+        <option>Fruits</option>
+        <option>Vegetables</option>
+        <option>Baked Goods</option>
+        <option>Prepared Meals</option>
+      </select>
+      <select id="time">
+        <option>Any Time</option>
+        <option>Today</option>
+        <option>Tomorrow</option>
+        <option>This Week</option>
+      </select>
+    </div>
+
+    <div class="results-count" id="resultCount">0 Results Found</div>
+
+    <div id="foodList"></div>
+  </main>
+
+  <script>
+    const foodList = document.getElementById("foodList");
+    const resultCount = document.getElementById("resultCount");
+
+    function renderFoodItems() {
+      const items = JSON.parse(localStorage.getItem("donations") || "[]");
+      foodList.innerHTML = '';
+
+      if (items.length === 0) {
+        resultCount.textContent = '0 Results Found';
+        foodList.innerHTML = '<p class="no-food">No food currently available.</p>';
+        return;
+      }
+
+      resultCount.textContent = `${items.length} Result${items.length > 1 ? 's' : ''} Found`;
+
+      items.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "food-card";
+        div.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>${item.details}</p>
+          <p>📍 Location: ${item.location}</p>
+          <p>🕒 Expires: ${new Date(item.expiry).toLocaleString()}</p>
+          <p>Type: ${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</p>
+          <button class="btn-confirm" data-index="${index}">Confirm Receiving</button>
+        `;
+        foodList.appendChild(div);
+      });
+
+      document.querySelectorAll(".btn-confirm").forEach(button => {
+        button.addEventListener("click", (e) => {
+          const idx = e.target.getAttribute("data-index");
+          confirmReceiving(idx);
+        });
+      });
+    }
+
+    function confirmReceiving(index) {
+      const items = JSON.parse(localStorage.getItem("donations") || "[]");
+      const receivedItem = items.splice(index, 1)[0];
+
+      localStorage.setItem("donations", JSON.stringify(items));
+
+      alert(`You have confirmed receiving: ${receivedItem.name}`);
+
+      renderFoodItems();
+    }
+
+    renderFoodItems();
+  </script>
+</body>
+</html>

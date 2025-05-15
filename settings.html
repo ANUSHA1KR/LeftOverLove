@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Settings - FoodSaver</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    :root {
+      --bg: #ffffff;
+      --text: #222222;
+      --sidebar-bg: #2c3e50;
+      --sidebar-text: #ffffff;
+      --sidebar-active-bg: #34495e;
+      --btn-bg: #27ae60;
+      --btn-hover-bg: #219150;
+      --btn-text: #ffffff;
+      --danger-bg: #e74c3c;
+      --danger-hover-bg: #c0392b;
+    }
+    [data-theme="dark"] {
+      --bg: #121212;
+      --text: #dddcdc;
+      --sidebar-bg: #1c2833;
+      --sidebar-text: #c7d1d9;
+      --sidebar-active-bg: #2874a6;
+      --btn-bg: #2980b9;
+      --btn-hover-bg: #1c5980;
+      --btn-text: #fff;
+      --danger-bg: #c0392b;
+      --danger-hover-bg: #922b21;
+    }
+
+    /* Sidebar */
+    nav.sidebar {
+      width: 220px;
+      background-color: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+    nav.sidebar h2 {
+      margin: 0 0 2rem 0;
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      text-align: center;
+      user-select: none;
+    }
+    nav.sidebar a {
+      color: var(--sidebar-text);
+      text-decoration: none;
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s;
+    }
+    nav.sidebar a:hover {
+      background-color: var(--sidebar-active-bg);
+    }
+    nav.sidebar a.active {
+      background-color: var(--sidebar-active-bg);
+      font-weight: 700;
+      box-shadow: inset 3px 0 0 0 #27ae60;
+    }
+    nav.sidebar button.logout-btn {
+      margin-top: auto;
+      background: transparent;
+      border: 2px solid var(--danger-bg);
+      color: var(--danger-bg);
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+    }
+    nav.sidebar button.logout-btn:hover {
+      background-color: var(--danger-bg);
+      color: var(--btn-text);
+    }
+
+    /* Main content */
+    main.content {
+      flex: 1;
+      padding: 3rem 4rem;
+      max-width: 900px;
+      margin: 2rem auto;
+      background-color: var(--bg);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      transition: background-color 0.3s, color 0.3s;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+    main.content h2 {
+      margin-top: 0;
+      margin-bottom: 2rem;
+      font-weight: 700;
+      color: var(--btn-bg);
+      user-select: none;
+    }
+
+    /* Buttons */
+    button#clearAll {
+      background-color: var(--danger-bg);
+      color: var(--btn-text);
+      border: none;
+      font-weight: 700;
+      padding: 12px 25px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: max-content;
+      user-select: none;
+    }
+    button#clearAll:hover {
+      background-color: var(--danger-hover-bg);
+    }
+
+    /* Message */
+    #settingsMsg {
+      margin-top: 1.2rem;
+      font-weight: 600;
+      min-height: 1.2em;
+      color: #27ae60;
+      user-select: text;
+    }
+
+    /* Dark/Light toggle */
+    .theme-toggle {
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 600;
+      user-select: none;
+      color: var(--text);
+    }
+    .theme-toggle label {
+      cursor: pointer;
+    }
+    .theme-toggle input[type="checkbox"] {
+      width: 45px;
+      height: 24px;
+      position: relative;
+      -webkit-appearance: none;
+      background: #c6c6c6;
+      outline: none;
+      border-radius: 20px;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .theme-toggle input[type="checkbox"]:checked {
+      background: var(--btn-bg);
+    }
+    .theme-toggle input[type="checkbox"]::before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 2px;
+      left: 3px;
+      background: white;
+      transition: 0.3s;
+    }
+    .theme-toggle input[type="checkbox"]:checked::before {
+      left: 22px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        flex-direction: column;
+      }
+      nav.sidebar {
+        flex-direction: row;
+        width: 100%;
+        padding: 1rem 0.5rem;
+        justify-content: space-around;
+        box-shadow: none;
+      }
+      nav.sidebar h2 {
+        display: none;
+      }
+      nav.sidebar a {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+      nav.sidebar button.logout-btn {
+        margin-top: 0;
+        border-width: 1.5px;
+        font-size: 0.9rem;
+      }
+      main.content {
+        margin: 1rem;
+        max-width: none;
+        padding: 2rem 1.5rem;
+        border-radius: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="sidebar" aria-label="Primary navigation">
+    <h2>FoodSaver</h2>
+    <a href="dashboard.html">🏠 Home</a>
+    <a href="donor.html">🧑‍🌾 Donor</a>
+    <a href="receiver.html">🤝 Receiver</a>
+    <a href="organization.html">🏢 Organization</a>
+    <a href="volunteer.html">🚗 Volunteer</a>
+    <a href="feedback.html">💬 Feedback</a>
+    <a href="support.html">📞 Support</a>
+    <a class="active" href="settings.html">⚙️ Settings</a>
+
+    <button class="logout-btn" id="logoutBtn" aria-label="Logout">🚪 Logout</button>
+  </nav>
+
+  <main class="content" role="main" aria-label="App Settings">
+    <h2>⚙️ App Settings</h2>
+
+    <div class="theme-toggle">
+      <label for="themeSwitch">Toggle Dark Mode</label>
+      <input type="checkbox" id="themeSwitch" aria-checked="false" />
+    </div>
+
+    <button id="clearAll" aria-label="Clear all local data">🗑️ Clear All Data</button>
+    <div id="settingsMsg" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    const themeSwitch = document.getElementById('themeSwitch');
+    const settingsMsg = document.getElementById('settingsMsg');
+
+    // Load saved theme preference
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeSwitch.checked = true;
+        themeSwitch.setAttribute('aria-checked', 'true');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeSwitch.checked = false;
+        themeSwitch.setAttribute('aria-checked', 'false');
+      }
+    }
+    const savedTheme = localStorage.getItem('theme');
+    applyTheme(savedTheme || 'light');
+
+    // Listen for toggle change
+    themeSwitch.addEventListener('change', () => {
+      if (themeSwitch.checked) {
+        applyTheme('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        applyTheme('light');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // Clear all data button
+    document.getElementById("clearAll").addEventListener("click", () => {
+      if (confirm("Are you sure you want to delete all local data?")) {
+        localStorage.clear();
+        settingsMsg.textContent = "All data has been cleared.";
+      }
+    });
+
+    // Logout button functionality (demo only)
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      if (confirm("Are you sure you want to logout?")) {
+        // Demo: clear localStorage and redirect to login page (adjust URL)
+        localStorage.clear();
+        settingsMsg.textContent = "Logging out...";
+        setTimeout(() => {
+          window.location.href = "index.html";  // change to your login page
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+</html>

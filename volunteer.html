@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Volunteer - FoodSaver</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="sidebar">
+    <h2>FoodSaver</h2>
+    <a href="dashboard.html">🏠 Home</a>
+    <a href="donor.html">🧑‍🌾 Donor</a>
+    <a href="receiver.html">🤝 Receiver</a>
+    <a href="organization.html">🏢 Organization</a>
+    <a class="active" href="volunteer.html">🚗 Volunteer</a>
+    <a href="feedback.html">💬 Feedback</a>
+    <a href="support.html">📞 Support</a>
+    <a href="settings.html">⚙️ Settings</a>
+  </nav>
+
+  <main class="content">
+    <h2>🚗 Volunteer Sign-up</h2>
+    <form id="volunteerForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="text" id="contact" placeholder="Contact Number" required />
+      <input type="text" id="area" placeholder="Area of Operation" required />
+      <button type="submit">Submit</button>
+    </form>
+    <div id="volunteerMsg" style="color: green; margin-top: 1rem;"></div>
+  </main>
+
+  <script>
+    document.getElementById("volunteerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const volunteers = JSON.parse(localStorage.getItem("volunteers") || "[]");
+      volunteers.push({
+        name: document.getElementById("name").value,
+        contact: document.getElementById("contact").value,
+        area: document.getElementById("area").value,
+      });
+      localStorage.setItem("volunteers", JSON.stringify(volunteers));
+      document.getElementById("volunteerMsg").textContent = "Thank you for volunteering!";
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
